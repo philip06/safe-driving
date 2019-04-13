@@ -16,7 +16,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="354dp"
-        android:text="Current Address"
+        android:text="@string/current_address"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,6 +34,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="13dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="tolerance_set"
         android:text="Tolerance"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/metrictab"
@@ -76,4 +79,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

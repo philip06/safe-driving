@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Safe-driving-ui</string>
     <string name="action_settings">Settings</string>
+    <string name="current_address">Settings</string>
+    <string name="Tolerance">Settings</string>
+    <string name="tolerance_set">Settings</string>
+    <string name="title_activity_settingslayout">settingslayout</string>
 </resources>
