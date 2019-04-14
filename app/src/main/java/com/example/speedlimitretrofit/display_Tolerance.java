@@ -1,3 +1,5 @@
+package com.example.speedlimitretrofit;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +15,7 @@ public class display_Tolerance extends Activity {
     }
 
     //set tolerance
-    protected void setTol()
+    private void setTol()
     {
         //retrieve range of tolerance that was entered
         EditText lowThresh = findViewById(R.id.lowThresh);

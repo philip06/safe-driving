@@ -7,6 +7,24 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/NotificationsTab"
+        android:layout_width="371dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/notification_tab"
+        android:textSize="30sp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="notifications_set"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/metrictab" />
+
+    <TextView
         android:id="@+id/permissionstab"
         android:layout_width="371dp"
         android:layout_height="70dp"
@@ -37,7 +55,7 @@
         android:clickable="true"
         android:focusable="true"
         android:onClick="tolerance_set"
-        android:text="Tolerance"
+        android:text="@string/Tolerance"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/metrictab"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,19 +65,17 @@
 
     <TextView
         android:id="@+id/metrictab"
-        android:layout_width="371dp"
+        android:layout_width="163dp"
         android:layout_height="70dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="13dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
         android:layout_marginBottom="16dp"
-        android:text="Current Address"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/permissionstab"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintEnd_toStartOf="@+id/metricToggle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Tolerancetab"
         tools:text="Mph/Kmh" />
@@ -73,11 +89,32 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Settings"
+        android:layout_marginBottom="19dp"
+        android:text="@string/action_settings"
         android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/Tolerancetab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/metricToggle"
+        android:layout_width="164dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
+        android:text="@string/ToggleButton"
+        android:textOff="@string/metric_toggle1"
+        android:textOn="@string/metric_toggle2"
+        android:onClick="metric_switch"
+        app:layout_constraintBottom_toTopOf="@+id/permissionstab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/metrictab"
+        app:layout_constraintTop_toBottomOf="@+id/Tolerancetab" />
 
 </android.support.constraint.ConstraintLayout>

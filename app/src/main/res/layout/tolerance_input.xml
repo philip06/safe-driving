@@ -22,8 +22,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/lowThresh" />
-
+        app:layout_constraintTop_toBottomOf="@+id/lowThresh"
+        tools:ignore="Autofill,LabelFor" />
     <TextView
         android:id="@+id/textView2"
         android:layout_width="170dp"
@@ -31,10 +31,13 @@
         android:layout_marginStart="36dp"
         android:layout_marginLeft="36dp"
         android:layout_marginTop="27dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="460dp"
-        android:text="High Threshold"
+        android:text="@string/high_threshold"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/highThresh"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -45,10 +48,13 @@
         android:layout_marginStart="36dp"
         android:layout_marginLeft="36dp"
         android:layout_marginTop="63dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="27dp"
-        android:text="Low Threshold"
+        android:text="@string/low_threshold"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toStartOf="@+id/lowThresh"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tolSetHeader" />
 
@@ -56,7 +62,9 @@
         android:id="@+id/tolSetHeader"
         android:layout_width="418dp"
         android:layout_height="81dp"
-        android:text="Change Tolerance Range"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:text="@string/change_tolerance_range"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,30 +76,34 @@
         android:layout_height="69dp"
         android:layout_marginStart="272dp"
         android:layout_marginLeft="272dp"
+        android:layout_marginTop="1dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="43dp"
-        android:text="Submit"
         android:onClick="setTol"
+        android:text="@string/submit_tolerance"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highThresh" />
 
     <EditText
         android:id="@+id/lowThresh"
         android:layout_width="103dp"
-        android:layout_height="46dp"
+        android:layout_height="52dp"
         android:layout_marginStart="76dp"
         android:layout_marginLeft="76dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="26dp"
         android:layout_marginRight="26dp"
-        android:layout_marginBottom="47dp"
+        android:layout_marginBottom="17dp"
         android:ems="10"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/highThresh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/tolSetHeader"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="Autofill,LabelFor" />
 </android.support.constraint.ConstraintLayout>
