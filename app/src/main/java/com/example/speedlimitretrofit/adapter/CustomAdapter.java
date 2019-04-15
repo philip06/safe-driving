@@ -1,7 +1,6 @@
 package com.example.speedlimitretrofit.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,10 @@ import android.widget.TextView;
 
 import com.example.speedlimitretrofit.R;
 //import com.example.speedlimitretrofit.model.RetroSpeed;
-import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-// TODO - nonfunctional, to be modified based on RetroSpeed model changes
+// TODO - nonfunctional, to be modified to work with OverpassModel and a Textview
 //public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 //
 //    private List<OSM> dataList;

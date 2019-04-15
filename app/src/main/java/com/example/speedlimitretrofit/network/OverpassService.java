@@ -1,9 +1,7 @@
 package com.example.speedlimitretrofit.network;
 
-import com.example.speedlimitretrofit.model.OverpassModel;
-import com.example.speedlimitretrofit.model.QueryModel;
-
-import java.util.List;
+import com.example.speedlimitretrofit.model.overpassmodel.OverpassModel;
+import com.example.speedlimitretrofit.model.querymodel.QueryModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
