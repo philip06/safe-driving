@@ -5,7 +5,7 @@ import org.simpleframework.xml.Root;
 
 // model for xml nd
 // contains ref which is a node id
-@Root(name="nd")
+@Root(name="nd", strict=false)
 public class ND {
 
     @Attribute(name = "ref")

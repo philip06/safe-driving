@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        maxSpeedTextView = findViewById(R.id.max_speed);
+        maxSpeedTextView = findViewById(R.id.maxSpeed);
 
         // implements OverpassService using retrofit client
         OverpassService overpassService = RetrofitClientInstance.createService(OverpassService.class);

@@ -8,7 +8,7 @@ import java.util.List;
 
 // model for xml tag
 // contains speed limit data and other data we won't be using
-@Root(name="tag")
+@Root(name="tag", strict=false)
 public class Tag {
 
     @Attribute(name = "k", required=false)

@@ -9,13 +9,13 @@ import java.util.List;
 // model for xml way
 // contains list of tag objects and list of nd objects
 // tag contains speed limit data, nd contains a node id
-@Root(name="way")
+@Root(name="way", strict=false)
 public class Way {
 
-    @ElementList(entry="tag", name="tag", inline = true, required=false)
+    @ElementList(entry="tag", inline = true, required=false)
     private List<Tag> tagList;
 
-    @ElementList(entry="nd", name="nd", inline = true, required=false)
+    @ElementList(entry="nd", inline = true, required=false)
     private List<ND> ndList;
 
     @Attribute(name="id", required=false)

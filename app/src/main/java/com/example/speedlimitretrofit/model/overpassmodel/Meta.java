@@ -3,7 +3,7 @@ package com.example.speedlimitretrofit.model.overpassmodel;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
-@Root(name="meta")
+@Root(name="meta", strict=false)
 public class Meta {
     @Attribute(name="osm_base", required=false)
     private String osmBase;

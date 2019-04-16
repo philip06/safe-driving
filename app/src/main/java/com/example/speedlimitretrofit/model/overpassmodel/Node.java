@@ -9,7 +9,7 @@ import java.util.List;
 // model for xml node
 // contains id, latitude and longitude
 // id can be used to reference ways using the nd objects within
-@Root(name="node")
+@Root(name="node", strict=false)
 public class Node {
 
     @Attribute(name = "id", required=false)
@@ -21,7 +21,7 @@ public class Node {
     @Attribute(name = "lon", required=false)
     private String lon;
 
-    @ElementList(entry="tag", name="tag", required=false)
+    @ElementList(required=false)
     private List<Tag> tagList;
 
     public Node() {   }

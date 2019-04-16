@@ -11,7 +11,7 @@ import org.simpleframework.xml.Root;
 // model for XML response from Overpass API
 // osm is the name of the root tag
 // contains a list of nodes and ways
-@Root(name="osm")
+@Root(name="osm", strict=false)
 public class OverpassModel {
 
     @ElementList(name="node", entry="node", inline = true, required=false)
