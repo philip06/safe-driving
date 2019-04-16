@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.speedlimitretrofit.controller.ResponseParser;
 import com.example.speedlimitretrofit.model.querymodel.*;
 import com.example.speedlimitretrofit.model.overpassmodel.*;
 import com.example.speedlimitretrofit.network.OverpassService;
 import com.example.speedlimitretrofit.network.RetrofitClientInstance;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -21,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView maxSpeedTextView;
 
-    // TODO: create model for query
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String testQuery = "<osm-script>\n" +
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         String recurseType = "down";
         String k = "maxspeed";
 
+        // Generate QueryModel by first creating its parameter objects
         HasKV hasKV = new HasKV(k);
 
         BBoxQuery bBoxQuery = new BBoxQuery(east, north, south, west);
@@ -55,11 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
         Union union = new Union("", recurse);
 
+        // Use other objects to create QueryModel object which is passed to retrofit
         QueryModel overpassQuery = new QueryModel(query, union, "");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // TextView which we write the data to
         maxSpeedTextView = findViewById(R.id.maxSpeed);
 
         // implements OverpassService using retrofit client
@@ -72,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         // runs call
         call.enqueue(new Callback<OverpassModel>() {
 
-            // TODO: create a parser for response object
             // run when api request is successful
             // response will be the object used to populate the textview
             @Override
@@ -80,21 +84,18 @@ public class MainActivity extends AppCompatActivity {
                 String max_speed = "max speed not found";
                 OverpassModel overpassModel = response.body();
 
-                // temporary parser that gets the first speed limit data from model for testing purposes
-                List<Tag> tagList = overpassModel.getWayList().get(0).getTagList();
-                ListIterator<Tag> listIterator = tagList.listIterator();
+                // initialize custom parser to simplify getting required data
+                ResponseParser responseParser = new ResponseParser(overpassModel);
 
-                while (listIterator.hasNext()) {
-                    Tag tag = listIterator.next();
-                    if (tag.getKey() == "maxspeed") {
-                        max_speed = tag.getValue();
-                    }
-                }
+                // populates variable with HashMap<nodeid, maxspeed> from data in overpassmodel
+                HashMap<String, String> nodeIdSpeedHash = responseParser.getNodeIdSpeedHash();
+                // populates variable with HashMap<nodeid, ArrayList<lat, lon>> from data in overpassmodel
+                HashMap<String, ArrayList<String>> nodeCoordsHash = responseParser.getNodeCoordsHash();
 
                 maxSpeedTextView.setText(max_speed);
             }
 
-            // TODO: implement proper error handling with logging
+            // TODO: implement proper error handling
             // TODO: write test cases for error handling
             // run on failure. does error handling
             @Override

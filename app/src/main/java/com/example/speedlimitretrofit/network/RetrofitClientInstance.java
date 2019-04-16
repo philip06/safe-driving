@@ -1,9 +1,12 @@
 package com.example.speedlimitretrofit.network;
 
+import com.example.speedlimitretrofit.BuildConfig;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
-// TODO: implement logging https://futurestud.io/tutorials/retrofit-2-log-requests-and-responses
 // centralizes retrofit creation for performance enhancing purposes and modularity
 public class RetrofitClientInstance {
     private static Retrofit retrofit;
@@ -12,9 +15,24 @@ public class RetrofitClientInstance {
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
             // Uses builder to build retrofit instance if it doesn't already exist
+
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+
+            if (BuildConfig.DEBUG) {
+                // set your desired log level
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            }
+
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+            // add your other interceptors …
+
+            // add logging as last interceptor
+            httpClient.addInterceptor(logging);
+
             retrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(SimpleXmlConverterFactory.create())
+                    .client(httpClient.build())
                     .build();
         }
         return retrofit;

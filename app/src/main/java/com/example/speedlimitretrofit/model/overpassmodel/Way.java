@@ -18,6 +18,14 @@ public class Way {
     @ElementList(entry="nd", inline = true, required=false)
     private List<ND> ndList;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Attribute(name="id", required=false)
     private String id;
 
