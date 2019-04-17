@@ -12,9 +12,6 @@ import com.example.speedlimitretrofit.network.OverpassService;
 import com.example.speedlimitretrofit.network.RetrofitClientInstance;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,18 +78,18 @@ public class MainActivity extends AppCompatActivity {
             // response will be the object used to populate the textview
             @Override
             public void onResponse(Call<OverpassModel> call, Response<OverpassModel> response) {
-                String max_speed = "max speed not found";
                 OverpassModel overpassModel = response.body();
+
+                double userLat = 72.8353241;
+                double userLon = 7.2384237;
+                String measurementUnit = "M";
 
                 // initialize custom parser to simplify getting required data
                 ResponseParser responseParser = new ResponseParser(overpassModel);
 
-                // populates variable with HashMap<nodeid, maxspeed> from data in overpassmodel
-                HashMap<String, String> nodeIdSpeedHash = responseParser.getNodeIdSpeedHash();
-                // populates variable with HashMap<nodeid, ArrayList<lat, lon>> from data in overpassmodel
-                HashMap<String, ArrayList<String>> nodeCoordsHash = responseParser.getNodeCoordsHash();
+                ArrayList<String> closestNodes = responseParser.getClosestNode(userLat, userLon, measurementUnit);
 
-                maxSpeedTextView.setText(max_speed);
+                maxSpeedTextView.setText(closestNodes.get(2));
             }
 
             // TODO: implement proper error handling

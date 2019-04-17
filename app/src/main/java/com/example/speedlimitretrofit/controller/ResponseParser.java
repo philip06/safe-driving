@@ -4,17 +4,20 @@ import com.example.speedlimitretrofit.model.overpassmodel.*;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+// Object specifically designed to parse the important information from a OverpassModel
 public class ResponseParser {
     private OverpassModel overpassModel;
-    private HashMap<String, String> nodeIdSpeedHash;
+    private HashMap<String, String> wayIdSpeedHash;
     private HashMap<String, ArrayList<String>> wayNdIdHash;
     private HashMap<String, ArrayList<String>> nodeCoordsHash;
 
     // Calculates fields upon creation
     public ResponseParser(OverpassModel overpassModel) {
         this.overpassModel = overpassModel;
-        this.nodeIdSpeedHash = new HashMap<>();
+        this.wayIdSpeedHash = new HashMap<>();
         this.wayNdIdHash = new HashMap<>();
         this.nodeCoordsHash = new HashMap<>();
 
@@ -52,12 +55,64 @@ public class ResponseParser {
 
             for (Tag t: way.getTagList()) {
                 if (t.getKey().equals("maxspeed")) {
-                    this.nodeIdSpeedHash.put(id, t.getValue());
+                    this.wayIdSpeedHash.put(id, t.getValue());
                 }
             }
             this.wayNdIdHash.put(way.getId(), ndIdList);
         }
 
+    }
+
+    // returns the first way id match which contains the given node id
+    public String nodeIdToWayId(String nodeId) {
+        for (Map.Entry<String, ArrayList<String>> entry : this.wayNdIdHash.entrySet()) {
+            String wayId = entry.getKey();
+            ArrayList<String> nodeIds = entry.getValue();
+            if (nodeIds.contains(nodeId)) {
+                return wayId;
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<String> getClosestNode(double userLat, double userLon, String measurementUnit) {
+        // initialize distanceCalculator outside loop to save memory
+        DistanceCalculator distanceCalculator;
+        // ArrayList holding the node closest to the user currently
+        // initialize a 3-length tuple to allow usage of .set()
+        ArrayList<String> closestNode = new ArrayList<>();
+        closestNode.add("");
+        closestNode.add("");
+        closestNode.add("");
+
+        double lowestDist = 1000000000.0;
+
+        // iterate through nodeCoordsHash
+        // calculates closest node to (userLat, userLon) which has speed limit data
+        for (Map.Entry<String, ArrayList<String>> entry : nodeCoordsHash.entrySet()) {
+            String nodeId = entry.getKey();
+            String wayId = this.nodeIdToWayId(nodeId);
+            String speedValue = this.wayIdSpeedHash.get(wayId);
+
+            // if id has no speedlimit data, skip
+            if (speedValue == null) {
+                continue;
+            }
+            ArrayList<String> coords = entry.getValue();
+            double nodeLat = Double.parseDouble(coords.get(0));
+            double nodeLon = Double.parseDouble(coords.get(1));
+            distanceCalculator = new DistanceCalculator();
+            double dist = distanceCalculator.distance(nodeLat, nodeLon, userLat, userLon, measurementUnit);
+            if (dist < lowestDist) {
+                lowestDist = dist;
+                closestNode.set(0, nodeId);
+                closestNode.set(1, String.valueOf(dist));
+                closestNode.set(2, speedValue);
+            }
+        }
+
+        return closestNode;
     }
 
     public OverpassModel getOverpassModel() {
@@ -72,7 +127,7 @@ public class ResponseParser {
         return this.nodeCoordsHash;
     }
 
-    public HashMap<String, String> getNodeIdSpeedHash() {
-        return this.nodeIdSpeedHash;
+    public HashMap<String, String> getWayIdSpeedHash() {
+        return this.wayIdSpeedHash;
     }
 }
