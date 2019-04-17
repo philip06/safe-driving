@@ -1,4 +1,4 @@
-package com.example.speedlimitretrofit.model.querymodel;
+package com.example.speedlimitretrofit.api.model.querymodel;
 
 import org.simpleframework.xml.Attribute;
 

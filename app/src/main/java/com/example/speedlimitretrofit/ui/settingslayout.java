@@ -1,11 +1,12 @@
-package com.example.speedlimitretrofit;
+package com.example.speedlimitretrofit.ui;
 
 import android.app.Activity;
 import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.CompoundButton;
 import android.widget.ToggleButton;
+
+import com.example.speedlimitretrofit.R;
 
 public class settingslayout extends Activity {
 

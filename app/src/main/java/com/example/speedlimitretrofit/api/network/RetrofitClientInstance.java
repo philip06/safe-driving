@@ -1,4 +1,4 @@
-package com.example.speedlimitretrofit.network;
+package com.example.speedlimitretrofit.api.network;
 
 import com.example.speedlimitretrofit.BuildConfig;
 

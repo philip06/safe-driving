@@ -1,10 +1,9 @@
-package com.example.speedlimitretrofit.controller;
+package com.example.speedlimitretrofit.helpers;
 
-import com.example.speedlimitretrofit.model.overpassmodel.*;
+import com.example.speedlimitretrofit.api.model.overpassmodel.*;
 
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 // Object specifically designed to parse the important information from a OverpassModel

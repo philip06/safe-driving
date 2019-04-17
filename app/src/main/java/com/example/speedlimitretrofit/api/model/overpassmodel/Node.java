@@ -1,4 +1,4 @@
-package com.example.speedlimitretrofit.model.overpassmodel;
+package com.example.speedlimitretrofit.api.model.overpassmodel;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;

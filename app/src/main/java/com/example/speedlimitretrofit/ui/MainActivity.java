@@ -1,15 +1,16 @@
-package com.example.speedlimitretrofit;
+package com.example.speedlimitretrofit.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.speedlimitretrofit.controller.ResponseParser;
-import com.example.speedlimitretrofit.model.querymodel.*;
-import com.example.speedlimitretrofit.model.overpassmodel.*;
-import com.example.speedlimitretrofit.network.OverpassService;
-import com.example.speedlimitretrofit.network.RetrofitClientInstance;
+import com.example.speedlimitretrofit.R;
+import com.example.speedlimitretrofit.helpers.ResponseParser;
+import com.example.speedlimitretrofit.api.model.querymodel.*;
+import com.example.speedlimitretrofit.api.model.overpassmodel.*;
+import com.example.speedlimitretrofit.api.network.OverpassService;
+import com.example.speedlimitretrofit.api.network.RetrofitClientInstance;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
         String testQuery = "<osm-script>\n" +
                 "  <query type=\"way\">\n" +
                 "    <has-kv k=\"maxspeed\"/>\n" +
@@ -57,9 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Use other objects to create QueryModel object which is passed to retrofit
         QueryModel overpassQuery = new QueryModel(query, union, "");
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         // TextView which we write the data to
         maxSpeedTextView = findViewById(R.id.maxSpeed);

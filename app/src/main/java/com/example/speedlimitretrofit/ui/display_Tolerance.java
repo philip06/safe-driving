@@ -1,4 +1,4 @@
-package com.example.speedlimitretrofit;
+package com.example.speedlimitretrofit.ui;
 
 import android.app.Activity;
 import android.content.Intent;
