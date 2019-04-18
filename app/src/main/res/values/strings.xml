@@ -22,5 +22,5 @@
     <string name="metric_toggle1">Mph</string>
     <string name="metric_toggle2">Kmh</string>
     <string name="ToggleButton">ToggleButton</string>
-
+    <string name="text_View">TextView</string>
 </resources>
