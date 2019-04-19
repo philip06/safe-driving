@@ -6,13 +6,13 @@ import android.os.Bundle;
 
 import com.example.speedlimitretrofit.R;
 
-public class permissions extends Activity {
+public class Notifications extends Activity {
 
     public void onCreate (Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         // set the user interface layout for this activity
-        setContentView(R.layout.permissions);
+        setContentView(R.layout.activit_notifications);
 
     }
 

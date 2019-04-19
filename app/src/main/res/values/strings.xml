@@ -8,10 +8,9 @@
     <string name="title_activity_settingslayout">settingslayout</string>
     <string name="About">About</string>
     <string name="lat_lon">Longitude / Latitude</string>
-    <string name="speed_placeholder">mph</string>
-    <string name="high_threshold">High Threshold</string>
-    <string name="low_threshold">Low Threshold</string>
-    <string name="change_tolerance_range">   Change Tolerance Range</string>
+    <string name="speed_placeholder">Metric</string>
+    <string name="threshold">Threshold</string>
+    <string name="change_tolerance_range">   Change Tolerance</string>
     <string name="submit_tolerance">Submit</string>
     <string name="notification_tab">Notifications</string>
     <string name="notification_settings">Notification Settings</string>
@@ -23,4 +22,6 @@
     <string name="metric_toggle2">Kmh</string>
     <string name="ToggleButton">ToggleButton</string>
     <string name="text_View">Max Speed</string>
+    <string name="permissions">Permissions</string>
+    <string name="current_speed">Current</string>
 </resources>

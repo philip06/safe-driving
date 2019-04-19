@@ -8,37 +8,37 @@ import android.widget.ToggleButton;
 
 import com.example.speedlimitretrofit.R;
 
-public class settingslayout extends Activity {
+public class Settings extends Activity {
 
 
 
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // set the user interface layout for this activity
-        setContentView(R.layout.settingslayout);
+        setContentView(R.layout.activity_settings);
 
     }
 
     //set new tolerance based on user input
     public void tolerance_set(View tolerance) {
 
-        Intent intent = new Intent(this, display_Tolerance.class);
+        Intent intent = new Intent(this, Tolerance.class);
         startActivity(intent);
     }
 
     public void notifications_set(View notif)
     {
-        Intent intent = new Intent (this, notifications.class);
+        Intent intent = new Intent (this, Notifications.class);
         startActivity(intent);
     }
 
     public void permissions_get(View perm)
     {
-        Intent intent = new Intent (this, permissions.class);
+        Intent intent = new Intent (this, Permissions.class);
         startActivity(intent);
     }
 
-    public void metric_switch(View metric)
+    /*public void metric_switch(View metric)
     {
         ToggleButton metricTog = findViewById(R.id.metricToggle);
 
@@ -52,6 +52,6 @@ public class settingslayout extends Activity {
         {
             //convert speed to miles
         }
-    }
+    }*/
 }
 

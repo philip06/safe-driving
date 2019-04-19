@@ -3,6 +3,8 @@ package com.example.speedlimitretrofit.ui;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,11 +28,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //calls foreground service
+        /*calls foreground service
         Intent startForeground = new Intent(MainActivity.this, ForegroundService.class);
         startForeground.setAction("com.retrofit.ForegroundService.********");
         startService(startForeground);
-
+        */
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -106,6 +108,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<OverpassModel> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //
+        final Button settingsButton = findViewById(R.id.buttonSet);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent set = new Intent(MainActivity.this, Settings.class);
+                startActivity(set);
             }
         });
     }
