@@ -76,10 +76,11 @@
 
     <TextView
         android:id="@+id/maxSpeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="84dp"
         android:text="@string/text_View"
-        tools:layout_editor_absoluteX="167dp"
-        tools:layout_editor_absoluteY="494dp" />
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="135dp"
+        tools:layout_editor_absoluteY="473dp" />
 
 </android.support.constraint.ConstraintLayout>

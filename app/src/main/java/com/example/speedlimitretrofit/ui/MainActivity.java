@@ -1,5 +1,6 @@
 package com.example.speedlimitretrofit.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -24,6 +25,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //calls foreground service
+        Intent startForeground = new Intent(MainActivity.this, ForegroundService.class);
+        startForeground.setAction("com.retrofit.ForegroundService.********");
+        startService(startForeground);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
