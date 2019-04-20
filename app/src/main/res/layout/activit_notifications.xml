@@ -22,61 +22,32 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/push"
-        android:layout_width="242dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginBottom="42dp"
-        android:text="@string/push_notifications"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/audio"
-        app:layout_constraintEnd_toStartOf="@+id/pushSwitch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Notification_header" />
-
-    <TextView
         android:id="@+id/audio"
         android:layout_width="244dp"
         android:layout_height="67dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="152dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
         android:text="@string/audio_notifications"
         android:textSize="30sp"
         app:layout_constraintEnd_toStartOf="@+id/audioSwitch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/push" />
-
-    <Switch
-        android:id="@+id/pushSwitch"
-        android:layout_width="112dp"
-        android:layout_height="76dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="41dp"
-        android:layout_marginRight="41dp"
-        android:layout_marginBottom="39dp"
-        app:layout_constraintBottom_toTopOf="@+id/audio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/push"
-        app:layout_constraintTop_toBottomOf="@+id/Notification_header"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/Notification_header" />
 
     <Switch
         android:id="@+id/audioSwitch"
         android:layout_width="112dp"
         android:layout_height="67dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="155dp"
         android:layout_marginEnd="39dp"
         android:layout_marginRight="39dp"
         android:layout_marginBottom="37dp"
         app:layout_constraintBottom_toTopOf="@+id/vibrationSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/audio"
-        app:layout_constraintTop_toBottomOf="@+id/pushSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/Notification_header" />
 
     <TextView
         android:id="@+id/vibration"
@@ -102,6 +73,5 @@
         android:layout_marginBottom="313dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/vibration"
-        app:layout_constraintTop_toBottomOf="@+id/audioSwitch" />
+        app:layout_constraintStart_toEndOf="@+id/vibration" />
 </android.support.constraint.ConstraintLayout>
