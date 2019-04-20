@@ -1,6 +1,7 @@
 package com.example.speedlimitretrofit.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,15 +25,13 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private TextView maxSpeedTextView;
+    private boolean colorToggle = true;
+    private boolean start = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        /*calls foreground service
-        Intent startForeground = new Intent(MainActivity.this, ForegroundService.class);
-        startForeground.setAction("com.retrofit.ForegroundService.********");
-        startService(startForeground);
-        */
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //
+        //navigate to settings menu
         final Button settingsButton = findViewById(R.id.buttonSet);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -119,5 +118,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(set);
             }
         });
+    }
+
+
+    //starts or stops the foreground service
+    public void toggleTrip(View view)
+    {
+        Intent foreground = new Intent(MainActivity.this, ForegroundTest.class);
+
+        if(start) {
+            foreground.setAction("test");
+            startService(foreground);
+        }
+        else{
+            foreground.setAction("test");
+            stopService(foreground);
+        }
+        start ^= true;
+        setColor();
+
+    }
+    //switches trip button color from red to green on click
+    public void setColor() {
+        Button trip = findViewById(R.id.tripButton);
+
+        if(colorToggle) {
+                trip.setBackgroundColor(Color.RED);
+        }
+        else {
+            trip.setBackgroundColor(Color.GREEN);
+        }
+        colorToggle ^= true;
     }
 }

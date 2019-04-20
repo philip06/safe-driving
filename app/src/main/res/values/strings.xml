@@ -24,4 +24,6 @@
     <string name="text_View">Max Speed</string>
     <string name="permissions">Permissions</string>
     <string name="current_speed">Current</string>
+    <string name="tripStart">Start Trip</string>
+    <string name="tripStop">Stop Trip</string>
 </resources>
