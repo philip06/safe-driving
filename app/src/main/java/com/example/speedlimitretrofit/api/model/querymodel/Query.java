@@ -11,12 +11,12 @@ public class Query {
     @Element(name="has-kv")
     private HasKV has_kv;
 
-    @Element(name="bbox-query")
-    private BBoxQuery bbox_query;
+    @Element(name="around")
+    private Around around;
 
-    public Query(String type, HasKV hasKV, BBoxQuery bBoxQuery) {
+    public Query(String type, HasKV hasKV, Around around) {
         this.type = type;
         this.has_kv = hasKV;
-        this.bbox_query = bBoxQuery;
+        this.around = around;
     }
 }
