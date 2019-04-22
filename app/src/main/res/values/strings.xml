@@ -26,4 +26,5 @@
     <string name="current_speed">Current</string>
     <string name="tripStart">Start Trip</string>
     <string name="tripStop">Stop Trip</string>
+    <string name="tolerance_def">10 mph</string>
 </resources>
