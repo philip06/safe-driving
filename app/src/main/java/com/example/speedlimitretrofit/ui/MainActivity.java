@@ -33,21 +33,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        String testQuery = "<osm-script>\n" +
-                "  <query type=\"way\">\n" +
-                "    <has-kv k=\"maxspeed\"/>\n" +
-                "    <bbox-query e=\"7.157\" n=\"50.748\" s=\"50.746\" w=\"7.154\"/>\n" +
-                "  </query>\n" +
-                "  <union>\n" +
-                "    <item/>\n" +
-                "    <recurse type=\"down\"/>\n" +
-                "  </union>\n" +
-                "  <print/>\n" +
-                "</osm-script>";
 
         String radius = "1500";
         String lat = "38.970030";
@@ -96,6 +83,16 @@ public class MainActivity extends AppCompatActivity {
         colorToggle ^= true;
     }
 
+    protected TextView getTextViewMaxSpeed()
+    {
+        return findViewById(R.id.maxSpeed);
+    }
+
+    protected TextView getTextViewCurrentSpeed()
+    {
+        return findViewById(R.id.CurrentSpeed);
+    }
+
     public void setMaxSpeedTextView(TextView maxSpeedTextView) {
         this.maxSpeedTextView = maxSpeedTextView;
     }
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             maxSpeedTextView.setText(maxSpeed);
             Toast.makeText(context,
                     "Triggered by Service!\n"
-                            + "Data passed: " + String.valueOf(maxSpeed),
+                            + "Data passed: " + maxSpeed,
                     Toast.LENGTH_LONG).show();
         }
     };
