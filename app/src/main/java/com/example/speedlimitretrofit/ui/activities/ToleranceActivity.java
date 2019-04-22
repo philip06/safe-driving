@@ -1,4 +1,4 @@
-package com.example.speedlimitretrofit.ui;
+package com.example.speedlimitretrofit.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.widget.EditText;
 import android.view.View;
 import com.example.speedlimitretrofit.R;
 
-public class Tolerance extends Activity {
+public class ToleranceActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

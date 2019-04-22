@@ -8,12 +8,12 @@ public class Around {
     private String radius;
 
     @Attribute(name="lat")
-    private String lat;
+    private double lat;
 
     @Attribute(name="lon")
-    private String lon;
+    private double lon;
 
-    public Around(String radius, String lat, String lon) {
+    public Around(String radius, double lat, double lon) {
         this.radius = radius;
         this.lat = lat;
         this.lon = lon;

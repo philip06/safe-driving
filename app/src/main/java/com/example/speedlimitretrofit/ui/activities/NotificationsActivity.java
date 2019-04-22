@@ -1,4 +1,4 @@
-package com.example.speedlimitretrofit.ui;
+package com.example.speedlimitretrofit.ui.activities;
 
 
 import android.app.Activity;
@@ -14,7 +14,7 @@ import com.example.speedlimitretrofit.R;
 
 import java.util.Locale;
 
-public class Notifications extends Activity {
+public class NotificationsActivity extends Activity {
 
     private TextToSpeech mTTS;
     private TextView maxSpeedTextView;

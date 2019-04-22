@@ -5,7 +5,7 @@
 
     <!-- Internet Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permisssion.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -19,24 +19,22 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <service
-            android:name=".ui.OverpassForegroundService"
+            android:name=".ui.services.OverpassForegroundService"
             android:enabled="true"
             android:exported="true"></service>
 
         <activity
-            android:name=".ui.Settings"
+            android:name=".ui.activities.SettingsActivity"
             android:label="@string/title_activity_settingslayout"></activity>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.Tolerance" />
+        <activity android:name=".ui.activities.ToleranceActivity" />
 
-        <service android:name=".ForegroundService" >
-        </service>
     </application>
 
 </manifest>

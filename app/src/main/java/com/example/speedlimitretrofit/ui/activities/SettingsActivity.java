@@ -1,14 +1,13 @@
-package com.example.speedlimitretrofit.ui;
+package com.example.speedlimitretrofit.ui.activities;
 
 import android.app.Activity;
 import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ToggleButton;
 
 import com.example.speedlimitretrofit.R;
 
-public class Settings extends Activity {
+public class SettingsActivity extends Activity {
 
 
 
@@ -22,19 +21,19 @@ public class Settings extends Activity {
     //set new tolerance based on user input
     public void tolerance_set(View tolerance) {
 
-        Intent intent = new Intent(this, Tolerance.class);
+        Intent intent = new Intent(this, ToleranceActivity.class);
         startActivity(intent);
     }
 
     public void notifications_set(View notif)
     {
-        Intent intent = new Intent (this, Notifications.class);
+        Intent intent = new Intent (this, NotificationsActivity.class);
         startActivity(intent);
     }
 
     public void permissions_get(View perm)
     {
-        Intent intent = new Intent (this, Permissions.class);
+        Intent intent = new Intent (this, PermissionsActivity.class);
         startActivity(intent);
     }
 

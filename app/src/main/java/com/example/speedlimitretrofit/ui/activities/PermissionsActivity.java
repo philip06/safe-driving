@@ -1,4 +1,4 @@
-package com.example.speedlimitretrofit.ui;
+package com.example.speedlimitretrofit.ui.activities;
 
 
 import android.app.Activity;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.speedlimitretrofit.R;
 
-public class Permissions extends Activity {
+public class PermissionsActivity extends Activity {
 
     public void onCreate (Bundle savedInstanceState) {
 

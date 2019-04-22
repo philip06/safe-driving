@@ -1,21 +1,20 @@
-package com.example.speedlimitretrofit.ui;
+package com.example.speedlimitretrofit.ui.services;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import com.example.speedlimitretrofit.R;
@@ -27,12 +26,6 @@ import com.example.speedlimitretrofit.helpers.ResponseParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,13 +33,25 @@ import retrofit2.Response;
 
 public class OverpassForegroundService extends Service {
     private static final String LOG_TAG = "OverpassForegroundService";
-    private Handler handler;
-    private Runnable runnable;
+
+    // made static so the task is schedules can be stopped in another call to OverpassForegroundService
+    private static Handler handler;
+    private static Runnable runnable;
+    private Intent intentField;
+
+    private static double userLat;
+    private static double userLon;
+    private static double userSpeed;
+
+    private static NotificationCompat.Builder notificationBuilder;
+    private static NotificationManager notificationManager;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        // initialize foreground in different ways depending on build version
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startMyOwnForeground();
         else
@@ -58,28 +63,46 @@ public class OverpassForegroundService extends Service {
         // the addAction re-use the same intent to keep the example short
         String action = intent.getAction();
 
-        final String radius = "1500";
-        final String lat = "38.970030";
-        final String lon = "-77.402170";
-        final int interval = 5000; // milliseconds
+        // get user location and speed from intent extras
+        Bundle extras = intent.getExtras();
+        this.userLat = 38.970030; //extras.getDouble("LATITUDE");
+        this.userLon = -77.402170; //extras.getDouble("LATITUDE");
+        this.userSpeed = extras.getDouble("SPEED");
 
-        if (action.equals("start")) {
-            handler = new Handler();
+        this.intentField = intent;
+
+        String radius = "1000";
+        int interval = 10000; // milliseconds
+
+        // if MainActivity sends a start trip command
+        if (action.equals("startTrip")) {
             // initialize a task scheduler
-            runnable = new Runnable() {
+            this.handler = new Handler();
+            this.runnable = new Runnable() {
+                String radius;
+                double lat;
+                double lon;
+                int interval;
+
                 @Override
                 public void run() {
-                    //do something
-                    runOverpassCall(radius, lat, lon);
-                    handler.postDelayed(this, interval);
+                    handler.postDelayed(this, this.interval - SystemClock.elapsedRealtime()%1000);
+                    // run api call
+                    runOverpassCall(this.radius, this.lat, this.lon);
                 }
-            };
-            handler.postDelayed(runnable, interval);
-        } else if (action.equals("stop")) {
-                // cancels scheduled task then terminates foreground service
-                handler.removeMessages(0);
-                stopForeground(true);
-                stopSelf();
+
+                public Runnable init(String radius, double lat, double lon, int interval) {
+                    this.radius=radius;
+                    this.lat=lat;
+                    this.lon=lon;
+                    this.interval=interval;
+                    return(this);
+                }
+            }.init(radius, this.userLat, this.userLon, interval);
+
+            // start runnable with handler
+            this.handler.postDelayed(this.runnable, interval - SystemClock.elapsedRealtime()%1000);
+        // if MainActivity sends a stop trip command
         }
 
         return START_STICKY;
@@ -88,7 +111,13 @@ public class OverpassForegroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        Log.i(LOG_TAG, "In onDestroy");
+
+        // cancels scheduled task then terminates foreground service
+        if (this.handler != null) {
+            this.handler.removeCallbacks(runnable);
+        }
+        stopForeground(true);
+        stopSelf();
     }
 
     @Override
@@ -98,6 +127,7 @@ public class OverpassForegroundService extends Service {
     }
 
 
+    // create foreground service in versions Oreo and up
     @RequiresApi(Build.VERSION_CODES.O)
     private void startMyOwnForeground(){
         String NOTIFICATION_CHANNEL_ID = "com.example.speedlimitretrofit";
@@ -105,11 +135,11 @@ public class OverpassForegroundService extends Service {
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
         chan.setLightColor(Color.BLUE);
         chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        assert manager != null;
-        manager.createNotificationChannel(chan);
+        this.notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert this.notificationManager != null;
+        this.notificationManager.createNotificationChannel(chan);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        this.notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Safe Driving")
@@ -119,7 +149,12 @@ public class OverpassForegroundService extends Service {
         startForeground(2, notification);
     }
 
-    public void runOverpassCall(String radius, String lat, String lon) {
+    public void updateForegroundSpeed(String maxSpeed) {
+        this.notificationBuilder.setContentText(this.userSpeed + "/" +  maxSpeed);
+        this.notificationManager.notify(2, this.notificationBuilder.build());
+    }
+
+    public void runOverpassCall(String radius, final double userLat, final double userLon) {
         String queryType = "way";
         String recurseType = "down";
         String k = "maxspeed";
@@ -127,7 +162,7 @@ public class OverpassForegroundService extends Service {
         // Generate QueryModel by first creating its parameter objects
         HasKV hasKV = new HasKV(k);
 
-        Around around = new Around(radius, lat, lon);
+        Around around = new Around(radius, userLat, userLon);
 
         Query query = new Query(queryType, hasKV, around);
 
@@ -156,8 +191,6 @@ public class OverpassForegroundService extends Service {
                 if (response.isSuccessful()) {
                     OverpassModel overpassModel = response.body();
 
-                    double userLat = 72.8353241;
-                    double userLon = 7.2384237;
                     // where: 'M' is statute miles (default):
                     //        'K' is kilometers
                     //        'N' is nautical miles
@@ -168,12 +201,17 @@ public class OverpassForegroundService extends Service {
 
                     // closestNode = ArrayList<nodeId, distance, speedValue>
                     ArrayList<String> closestNode = responseParser.getClosestNode(userLat, userLon, measurementUnit);
+                    String maxSpeed = closestNode.get(2);
                     Intent intent = new Intent();
-                    intent.putExtra("maxSpeed", closestNode.get(2));
+                    intent.setAction("sendSpeed");
+                    intent.putExtra("maxSpeed", maxSpeed);
+
+                    // update maxSpeed on foreground service notification bar
+                    updateForegroundSpeed(maxSpeed);
 
                     // update maxSpeed textview with a broadcast
-                    Toast.makeText(getApplicationContext(), "sending broadcast with: " + closestNode.get(2), Toast.LENGTH_SHORT).show();
-                    sendBroadcast(intent);
+                    Toast.makeText(getApplicationContext(), "sending broadcast with: " + maxSpeed, Toast.LENGTH_SHORT).show();
+                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
 //                    maxSpeedTextView.setText(closestNode.get(2));
                     // runs on error being returned from server
                 }
