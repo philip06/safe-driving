@@ -26,7 +26,7 @@ public class Notifications extends Activity {
 
         super.onCreate(savedInstanceState);
         // set the user interface layout for this activity
-        setContentView(R.layout.notifications);
+        setContentView(R.layout.activity_notifications);
 
         mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
