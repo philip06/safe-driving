@@ -82,6 +82,7 @@ public class OverpassForegroundService extends Service {
                 String radius;
                 double lat;
                 double lon;
+
                 int interval;
 
                 @Override
@@ -96,6 +97,7 @@ public class OverpassForegroundService extends Service {
                     this.lat=lat;
                     this.lon=lon;
                     this.interval=interval;
+
                     return(this);
                 }
             }.init(radius, this.userLat, this.userLon, interval);

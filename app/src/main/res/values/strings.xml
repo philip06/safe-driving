@@ -5,7 +5,7 @@
     <string name="current_address">Current Address</string>
     <string name="Tolerance">Tolerance</string>
     <string name="tolerance_set">tolerance_set</string>
-    <string name="title_activity_settingslayout">settingslayout</string>
+    <string name="title_activity_settingslayout">Settings</string>
     <string name="About">About</string>
     <string name="lat_lon">Longitude / Latitude</string>
     <string name="speed_placeholder">Metric</string>
@@ -27,4 +27,7 @@
     <string name="tripStart">Start Trip</string>
     <string name="tripStop">Stop Trip</string>
     <string name="tolerance_def">10 mph</string>
+    <string name="vibration_pref">Turn on/off vibration notifications</string>
+    <string name="audio_pref">Turn on/off audio notifications</string>
+    <string name="thresh_pref">Change the threshold at which you want to be alerted</string>
 </resources>

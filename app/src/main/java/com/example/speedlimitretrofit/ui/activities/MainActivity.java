@@ -32,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView maxSpeedTextView;
     private boolean colorToggle = true;
     private boolean start = true;
+    private double tolerance = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             extras.putDouble("LATITUDE", lat);
             extras.putDouble("LONGITUDE", lon);
             extras.putDouble("SPEED", speed);
-
+            extras.putDouble("TOLERANCE", tolerance);
             // start foreground service
             foreground.putExtras(extras);
             startService(foreground);
