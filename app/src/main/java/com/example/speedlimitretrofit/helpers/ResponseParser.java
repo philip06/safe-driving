@@ -107,7 +107,7 @@ public class ResponseParser {
                 lowestDist = dist;
                 closestNode.set(0, nodeId);
                 closestNode.set(1, String.valueOf(dist));
-                closestNode.set(2, speedValue);
+                closestNode.set(2, speedValue.split(" ")[0]);
             }
         }
 

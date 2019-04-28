@@ -1,15 +1,11 @@
 package com.example.speedlimitretrofit.ui.activities;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
-import android.view.View;
 
-import com.example.speedlimitretrofit.R;
+import com.example.speedlimitretrofit.ui.fragments.SettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity {
 

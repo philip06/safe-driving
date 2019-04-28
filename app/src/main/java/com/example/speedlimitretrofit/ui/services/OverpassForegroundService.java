@@ -6,15 +6,21 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.speedlimitretrofit.R;
@@ -22,10 +28,13 @@ import com.example.speedlimitretrofit.api.model.overpassmodel.*;
 import com.example.speedlimitretrofit.api.model.querymodel.*;
 import com.example.speedlimitretrofit.api.network.OverpassService;
 import com.example.speedlimitretrofit.api.network.RetrofitClientInstance;
+import com.example.speedlimitretrofit.helpers.GPSTracker;
 import com.example.speedlimitretrofit.helpers.ResponseParser;
+import com.example.speedlimitretrofit.ui.activities.MainActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,13 +48,14 @@ public class OverpassForegroundService extends Service {
     private static Runnable runnable;
     private Intent intentField;
 
-    private static double userLat;
-    private static double userLon;
-    private static double userSpeed;
+//    private static double userLat;
+//    private static double userLon;
+//    private static double userSpeed;
 
     private static NotificationCompat.Builder notificationBuilder;
     private static NotificationManager notificationManager;
 
+    private TextToSpeech mTTS;
 
     @Override
     public void onCreate() {
@@ -56,18 +66,28 @@ public class OverpassForegroundService extends Service {
             startMyOwnForeground();
         else
             startForeground(1, new Notification());
+
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = mTTS.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("notifications error", "Language not supported");
+                    }
+                }
+                else {
+                    Log.e("notifications error", "Initialization failed");
+                }
+            }
+        });
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // the addAction re-use the same intent to keep the example short
         String action = intent.getAction();
-
-        // get user location and speed from intent extras
-        Bundle extras = intent.getExtras();
-        this.userLat = 38.970030; //extras.getDouble("LATITUDE");
-        this.userLon = -77.402170; //extras.getDouble("LATITUDE");
-        this.userSpeed = extras.getDouble("SPEED");
 
         this.intentField = intent;
 
@@ -80,8 +100,6 @@ public class OverpassForegroundService extends Service {
             this.handler = new Handler();
             this.runnable = new Runnable() {
                 String radius;
-                double lat;
-                double lon;
 
                 int interval;
 
@@ -89,18 +107,16 @@ public class OverpassForegroundService extends Service {
                 public void run() {
                     handler.postDelayed(this, this.interval - SystemClock.elapsedRealtime()%1000);
                     // run api call
-                    runOverpassCall(this.radius, this.lat, this.lon);
+                    runOverpassCall(this.radius);
                 }
 
-                public Runnable init(String radius, double lat, double lon, int interval) {
+                public Runnable init(String radius, int interval) {
                     this.radius=radius;
-                    this.lat=lat;
-                    this.lon=lon;
                     this.interval=interval;
 
                     return(this);
                 }
-            }.init(radius, this.userLat, this.userLon, interval);
+            }.init(radius, interval);
 
             // start runnable with handler
             this.handler.postDelayed(this.runnable, interval - SystemClock.elapsedRealtime()%1000);
@@ -118,6 +134,9 @@ public class OverpassForegroundService extends Service {
         if (this.handler != null) {
             this.handler.removeCallbacks(runnable);
         }
+
+        this.mTTS.shutdown();
+
         stopForeground(true);
         stopSelf();
     }
@@ -151,12 +170,60 @@ public class OverpassForegroundService extends Service {
         startForeground(2, notification);
     }
 
-    public void updateForegroundSpeed(String maxSpeed) {
-        this.notificationBuilder.setContentText(this.userSpeed + "/" +  maxSpeed);
-        this.notificationManager.notify(2, this.notificationBuilder.build());
+    public void updateForegroundSpeed(String maxSpeed, String userSpeed, String status) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        // get notification settings from user
+        boolean audioPreference = settings.getBoolean("Audio_Preference", false);
+        boolean vibrationPreference = settings.getBoolean("Vibration_Preference", false);
+
+        // alpha, red, green, blue [0-255]
+        int A, R, G, B, color;
+
+        if (status.equals("safe")) {
+            A = 1;
+            R = 0;
+            G = 255;
+            B = 0;
+            color = (A & 0xff) << 24 | (R & 0xff) << 16 | (G & 0xff) << 8 | (B & 0xff);
+            this.notificationBuilder.setContentText(userSpeed + "/" + maxSpeed);
+            this.notificationBuilder.setColor(color);
+            this.notificationManager.notify(2, this.notificationBuilder.build());
+        } else if (status.equals("warning")) {
+            A = 1;
+            R = 255;
+            G = 0;
+            B = 0;
+            color = (A & 0xff) << 24 | (R & 0xff) << 16 | (G & 0xff) << 8 | (B & 0xff);
+            this.notificationBuilder.setContentText(userSpeed + "/" + maxSpeed);
+            this.notificationBuilder.setColor(color);
+            this.notificationManager.notify(2, this.notificationBuilder.build());
+
+            if (vibrationPreference) {
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(750);
+            }
+
+            String textWarning = "Please slow down.";
+
+            if (audioPreference) {
+                mTTS.speak(textWarning, TextToSpeech.QUEUE_FLUSH, null);
+            }
+        }
     }
 
-    public void runOverpassCall(String radius, final double userLat, final double userLon) {
+    public void runOverpassCall(String radius) {
+        Location loc = new GPSTracker(getApplicationContext()).getLocation();
+        final double userLat = loc.getLatitude();
+        final double userLon = loc.getLongitude();
+        final double userSpeed = loc.getSpeed();
+
+        // String lat = "38.970030";
+        // String lon = "-77.402170";
+
+        // get speedTolerance from user preferences
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final double speedTolerance = Double.parseDouble(settings.getString("Speed_Tolerance", "10"));
+
         String queryType = "way";
         String recurseType = "down";
         String k = "maxspeed";
@@ -208,8 +275,15 @@ public class OverpassForegroundService extends Service {
                     intent.setAction("sendSpeed");
                     intent.putExtra("maxSpeed", maxSpeed);
 
+                    String status = "safe";
+
+                    // if userSpeed is higher than the maxSpeed + speedTolerance then send a speed notification
+                    if (userSpeed  > Double.parseDouble(maxSpeed) + speedTolerance) {
+                        status = "warning";
+                    }
+
                     // update maxSpeed on foreground service notification bar
-                    updateForegroundSpeed(maxSpeed);
+                    updateForegroundSpeed(maxSpeed, String.valueOf(userSpeed), status);
 
                     // update maxSpeed textview with a broadcast
                     Toast.makeText(getApplicationContext(), "sending broadcast with: " + maxSpeed, Toast.LENGTH_SHORT).show();

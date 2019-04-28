@@ -80,21 +80,6 @@ public class MainActivity extends AppCompatActivity {
         if(start) {
             Toast.makeText(MainActivity.this, "startTrip", Toast.LENGTH_SHORT).show();
             foreground.setAction("startTrip");
-
-            // get speed and location
-            Location loc = new GPSTracker(MainActivity.this).getLocation();
-            double lat = loc.getLatitude();
-            double lon = loc.getLongitude();
-            double speed = loc.getSpeed();
-
-            // bundle information together to be pass through intent
-            Bundle extras = new Bundle();
-            extras.putDouble("LATITUDE", lat);
-            extras.putDouble("LONGITUDE", lon);
-            extras.putDouble("SPEED", speed);
-            extras.putDouble("TOLERANCE", tolerance);
-            // start foreground service
-            foreground.putExtras(extras);
             startService(foreground);
         }
         else{

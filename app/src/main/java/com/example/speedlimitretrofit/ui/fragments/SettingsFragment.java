@@ -1,4 +1,4 @@
-package com.example.speedlimitretrofit.ui.activities;
+package com.example.speedlimitretrofit.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
