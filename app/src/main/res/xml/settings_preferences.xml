@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:defaultValue="10"
+        android:key="Speed_Tolerance"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="@string/thresh_pref"
+        android:title="Change Speed Tolerance" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="Audio_Preference"
+        android:summary="@string/audio_pref"
+        android:title="Audio Preference" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="Vibration_Preference"
+        android:summary="@string/vibration_pref"
+        android:title="Vibration Preference" />
+</PreferenceScreen>
