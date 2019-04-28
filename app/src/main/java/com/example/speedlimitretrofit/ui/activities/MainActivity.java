@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String[] INITIAL_PERMS={
             Manifest.permission.ACCESS_FINE_LOCATION
     };
-
+    int count=0;
     private TextView maxSpeedTextView;
     private boolean colorToggle = true;
     private boolean start = true;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        final TextView CurrentSpeedTV= (TextView) findViewById(R.id.CurrentSpeed);
         this.maxSpeedTextView = findViewById(R.id.maxSpeed);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -45,7 +46,28 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(INITIAL_PERMS, 255);
             }
         }
+        Thread t= new Thread(){
+           @Override
+           public void run(){
+               final GPSTracker gps = new GPSTracker(getApplicationContext());
+               while(!isInterrupted()){
+                   try {
+                       Thread.sleep(1000);
+                       runOnUiThread(new Runnable() {
+                           @Override
+                           public void run() {
+                               float temp= gps.getLocation().getSpeed();
+                               CurrentSpeedTV.setText(String.valueOf((int)gps.getLocation().getSpeed()));
 
+                           }
+                       });
+                   } catch (InterruptedException e) {
+                       e.printStackTrace();
+                   }
+               }
+           }
+        };
+        t.start();
         //navigate to settings menu
         final Button settingsButton = findViewById(R.id.buttonSet);
         settingsButton.setOnClickListener(new View.OnClickListener() {
