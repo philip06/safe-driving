@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                final GPSTracker gps = new GPSTracker(getApplicationContext());
                while(!isInterrupted()){
                    try {
-                       Thread.sleep(1000);
+                       Thread.sleep(200);
                        runOnUiThread(new Runnable() {
                            @Override
                            public void run() {
