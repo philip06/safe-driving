@@ -67,6 +67,7 @@ public class OverpassForegroundService extends Service {
         else
             startForeground(1, new Notification());
 
+        // initialize texttospeech object
         mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -130,13 +131,15 @@ public class OverpassForegroundService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
-        // cancels scheduled task then terminates foreground service
+        // cancels scheduled tasks
         if (this.handler != null) {
             this.handler.removeCallbacks(runnable);
         }
 
+        // free resources used by texttospeech object
         this.mTTS.shutdown();
 
+        // destroys foreground service
         stopForeground(true);
         stopSelf();
     }
@@ -146,7 +149,6 @@ public class OverpassForegroundService extends Service {
         // Used only in case of bound services.
         return null;
     }
-
 
     // create foreground service in versions Oreo and up
     @RequiresApi(Build.VERSION_CODES.O)
@@ -179,6 +181,7 @@ public class OverpassForegroundService extends Service {
         // alpha, red, green, blue [0-255]
         int A, R, G, B, color;
 
+        // set icon to green and update speed if user is at a safe speed
         if (status.equals("safe")) {
             A = 1;
             R = 0;
@@ -188,6 +191,7 @@ public class OverpassForegroundService extends Service {
             this.notificationBuilder.setContentText(userSpeed + "/" + maxSpeed);
             this.notificationBuilder.setColor(color);
             this.notificationManager.notify(2, this.notificationBuilder.build());
+        // set icon to red and update speed if user is being warned for speed
         } else if (status.equals("warning")) {
             A = 1;
             R = 255;
@@ -198,6 +202,7 @@ public class OverpassForegroundService extends Service {
             this.notificationBuilder.setColor(color);
             this.notificationManager.notify(2, this.notificationBuilder.build());
 
+            // send vibration to user on condition of vibrationPreference
             if (vibrationPreference) {
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(750);
@@ -205,6 +210,7 @@ public class OverpassForegroundService extends Service {
 
             String textWarning = "Please slow down.";
 
+            // send audio notification to user on condition of audioPreference
             if (audioPreference) {
                 mTTS.speak(textWarning, TextToSpeech.QUEUE_FLUSH, null);
             }
@@ -217,8 +223,8 @@ public class OverpassForegroundService extends Service {
         final double userLon = loc.getLongitude();
         final double userSpeed = loc.getSpeed();
 
-        // String lat = "38.970030";
-        // String lon = "-77.402170";
+        // lat = 38.970030
+        // lon = -77.402170
 
         // get speedTolerance from user preferences
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView maxSpeedTextView;
     private boolean colorToggle = true;
     private boolean start = true;
-    private double tolerance = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

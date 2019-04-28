@@ -9,8 +9,6 @@ import com.example.speedlimitretrofit.ui.fragments.SettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity {
 
-
-
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // set the user interface layout for this activity
@@ -26,22 +24,5 @@ public class SettingsActivity extends AppCompatActivity {
         */
 
     }
-
-    //set new tolerance based on user input
-    /*public void metric_switch(View metric)
-    {
-        ToggleButton metricTog = findViewById(R.id.metricToggle);
-
-        Boolean kmh = metricTog.isChecked();
-
-        if(kmh)
-        {
-            //convert speed to kilometers
-        }
-        else
-        {
-            //convert speed to miles
-        }
-    }*/
 }
 
