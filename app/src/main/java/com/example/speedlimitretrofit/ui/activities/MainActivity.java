@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
                            @Override
                            public void run() {
                                float temp= gps.getLocation().getSpeed();
-                               CurrentSpeedTV.setText(String.valueOf((int)gps.getLocation().getSpeed()));
+                               CurrentSpeedTV.setText(String.valueOf((int)(gps.getLocation().getSpeed()*1.151)));
                             //   String LonAndLat = "Longitude: "+ String.format("%.4",gps.getLocation().getLongitude())+"\nLatitude: "+ String.format("%.4",gps.getLocation().getLatitude());
-                               LonAndLatTV.setText("Longitude: "+ String.format("%.4f",gps.getLocation().getLongitude())+"\nLatitude: "+ String.format("%.4f",gps.getLocation().getLatitude()));
-                               //String lon= "Longitude: "+ String.format("%.4",gps.getLocation().getLongitude());
+                               LonAndLatTV.setText("Longitude: "+ String.format("%.4f",gps.getLocation().getLongitude())+"\nLatitude:     "+ String.format("%.4f",gps.getLocation().getLatitude()));
+                               //String lon= "Longitude: "+ String.format("%.4",gps.getLocation().getLongitude())
 
                                //LonAndLatTV.setText("Longitude: "+ gps.getLocation().getLongitude()+ "\nLatitude: "+ gps.getLocation().getLatitude());
 
