@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final TextView CurrentSpeedTV= (TextView) findViewById(R.id.CurrentSpeed);
+        final TextView LonAndLatTV=(TextView) findViewById(R.id.LonLat);
         this.maxSpeedTextView = findViewById(R.id.maxSpeed);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -58,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
                            public void run() {
                                float temp= gps.getLocation().getSpeed();
                                CurrentSpeedTV.setText(String.valueOf((int)gps.getLocation().getSpeed()));
+                            //   String LonAndLat = "Longitude: "+ String.format("%.4",gps.getLocation().getLongitude())+"\nLatitude: "+ String.format("%.4",gps.getLocation().getLatitude());
+                               LonAndLatTV.setText("Longitude: "+ String.format("%.4f",gps.getLocation().getLongitude())+"\nLatitude: "+ String.format("%.4f",gps.getLocation().getLatitude()));
+                               //String lon= "Longitude: "+ String.format("%.4",gps.getLocation().getLongitude());
+
+                               //LonAndLatTV.setText("Longitude: "+ gps.getLocation().getLongitude()+ "\nLatitude: "+ gps.getLocation().getLatitude());
 
                            }
                        });
